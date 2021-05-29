@@ -53,7 +53,7 @@ def p(r):
 	return 5*2.71828**(-0.505*(r-1)**2)
 
 def fpzt(r,v,w):
-	return max(v-r,min(v,w))
+	return max(v-r,min(v+r,w))
 
 def updateF(x,Fapzt,Fppzt,Papzt):
 	for i in range(M):

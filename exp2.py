@@ -8,12 +8,15 @@ import tkinter
 import os
 import math
 import csv
+alpha=1
+lamd=0.01
+exs=1
 a1=1
 a2=1
-m1=0.00001
-m2=0.001
-s1=0.00001
-s2=0.001
+m1=0.000001
+m2=0.0001
+s1=0.000001
+s2=0.0001
 try:
 	os.mkdir('csv/')
 except:
@@ -57,11 +60,12 @@ def p(r):
 	return 5*2.71828**(-0.505*(r-1)**2)
 
 def fpzt(r,v,w):
-	return max(v-r,min(v,w))
+	return max(v-r,min(v+r,w))
 
-def updateF(x,Fapzt,Fppzt,Papzt):
+def updateF(x,Fapzt,Fppzt,Papzt,vd):
 	for i in range(M):
-		Fapzt[i][0]=fpzt(i*dr,x,Fapzt[i][0])
+		rbar=alpha*numpy.log(numpy.exp(i*dr/alpha)+lamd*abs(vd)**(exs))
+		Fapzt[i][0]=fpzt(rbar,x,Fapzt[i][0])
 	Fppzt=Fapzt*Papzt
 	return Fapzt,Fppzt 
 
@@ -438,7 +442,7 @@ def _plot3():
 		g=a2*2.71828**(s2*x-s1*vd)
 		w=a1*2.71828**(m2*x-m1*vd)
 		yl.append(y(w,x,g,Fp,dr))
-		Fa,Fp=updateF(x,Fa,Fp,Pa)
+		Fa,Fp=updateF(x,Fa,Fp,Pa,vd)
 	singall=_plot4(yl)
 	plt.plot(tl,xl)
 	plt.plot(tl,singall)
